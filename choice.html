@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Choice Hotels — Eve Kivari</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    .cs-hero {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 48px 72px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .cs-hero-bg { position: absolute; inset: 0; overflow: hidden; }
+    .cs-hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0.2; filter: saturate(0.4); }
+    .cs-hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.8) 60%, #0a0a0a 100%); }
+    .cs-hero-content { position: relative; z-index: 2; opacity: 0; transform: translateY(24px); animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.2s forwards; }
+    @keyframes fadeUp { to { opacity:1; transform:none; } }
+
+    .cs-back { display: inline-flex; align-items: center; gap: 10px; color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 40px; transition: color 0.3s, gap 0.3s; }
+    .cs-back::before { content: '←'; }
+    .cs-back:hover { color: var(--white); gap: 14px; }
+
+    .cs-eyebrow { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: flex; align-items: center; gap: 14px; }
+    .cs-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
+
+    h1 { font-family: var(--f-display); font-size: clamp(52px, 6vw, 88px); font-weight: 300; line-height: 1.0; color: var(--white); margin-bottom: 32px; }
+    h1 em { font-style: italic; color: var(--accent); }
+
+    .cs-meta { display: flex; gap: 48px; flex-wrap: wrap; }
+    .cs-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .cs-meta-value { color: var(--white); font-size: 12px; }
+
+    .cs-body { max-width: 1400px; margin: 0 auto; padding: 0 48px; }
+
+    .cs-overview { display: grid; grid-template-columns: 2fr 1fr; gap: 80px; padding: 80px 0; border-bottom: 1px solid var(--border); }
+    .cs-overview-text p { color: var(--muted); line-height: 2; margin-bottom: 14px; font-size: 13px; }
+    .cs-overview-text p:first-child { font-family: var(--f-display); font-size: 20px; color: var(--text); line-height: 1.7; }
+
+    .cs-stats { display: flex; flex-direction: column; gap: 28px; justify-content: center; }
+    .cs-stat { padding: 20px 24px; background: var(--surface); border: 1px solid var(--border); border-left: 2px solid var(--accent); }
+    .cs-stat-num { font-family: var(--f-display); font-size: 32px; font-weight: 300; color: var(--accent); line-height: 1; }
+    .cs-stat-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+    .cs-section-title { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 32px; display: flex; align-items: center; gap: 16px; }
+    .cs-section-title::before { content: ''; flex: 1; max-width: 32px; height: 1px; background: var(--accent); }
+
+    .cs-section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+    .cs-section:last-child { border-bottom: none; }
+
+    .cs-caption { font-size: 11px; color: var(--muted); margin-top: 12px; letter-spacing: 0.06em; }
+    .cs-full-img { width: 100%; display: block; border-radius: 2px; border: 1px solid var(--border); cursor: zoom-in; }
+
+    .cs-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+    .cs-two-col img { width: 100%; display: block; border-radius: 2px; cursor: zoom-in; border: 1px solid var(--border); }
+    .cs-two-col .img-wrap { display: flex; flex-direction: column; gap: 8px; }
+
+    /* Storefront responsive trio */
+    .cs-storefront-trio {
+      display: grid;
+      grid-template-columns: 1fr 480px 240px;
+      gap: 3px;
+      align-items: start;
+    }
+    .cs-storefront-trio img { width: 100%; display: block; border-radius: 2px; cursor: zoom-in; border: 1px solid var(--border); }
+    .cs-storefront-trio .img-wrap { display: flex; flex-direction: column; gap: 8px; }
+
+    /* Social mockup grid */
+    .cs-social-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3px;
+    }
+    .cs-social-grid img { width: 100%; display: block; border-radius: 2px; cursor: zoom-in; }
+    .cs-social-grid .img-wrap { display: flex; flex-direction: column; gap: 8px; }
+
+    /* IG story pair — tall images side by side */
+    .cs-story-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      max-width: 600px;
+    }
+    .cs-story-pair img { width: 100%; display: block; border-radius: 2px; cursor: zoom-in; }
+    .cs-story-pair .img-wrap { display: flex; flex-direction: column; gap: 8px; }
+
+    /* Display ads */
+    .cs-display-grid { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+    .cs-display-item { display: flex; flex-direction: column; gap: 8px; }
+    .cs-display-item img { display: block; border-radius: 2px; cursor: zoom-in; border: 1px solid var(--border); }
+    .cs-display-label { font-size: 10px; color: var(--muted); letter-spacing: 0.08em; text-align: center; }
+
+    .cs-nav { display: flex; justify-content: space-between; padding: 64px 48px; border-top: 1px solid var(--border); }
+    .cs-nav a { color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; display: flex; align-items: center; gap: 10px; }
+    .cs-nav a:first-child::before { content: '←'; }
+    .cs-nav a:last-child::after  { content: '→'; }
+    .cs-nav a:hover { color: var(--accent); }
+
+    @media (max-width: 900px) {
+      .cs-hero, .cs-body { padding-left: 24px; padding-right: 24px; }
+      .cs-overview, .cs-two-col, .cs-social-grid, .cs-storefront-trio { grid-template-columns: 1fr; gap: 16px; }
+      .cs-story-pair { max-width: 100%; }
+      .cs-nav { padding: 48px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="lightbox-overlay" id="lightboxOverlay">
+    <button class="lightbox-close" onclick="closeLightbox()">Close ✕</button>
+    <img id="lightboxImg" src="" alt="" />
+  </div>
+
+  <nav id="nav">
+    <a class="nav-logo" href="index.html" aria-label="Back to home">
+      <svg viewBox="0 0 1024 768" xmlns="http://www.w3.org/2000/svg"><path d="M157.55,495.15v-2.51h44.76V151.15l60.1-6.04v-.5c-32.94-4.02-51.3-6.29-67.9-6.29-35.96,0-54.06,10.56-54.06,33.45,0,15.09,11.57,26.15,23.64,31.18-1.51,31.68-25.65,46.27-50.8,46.27s-49.79-18.86-49.79-49.54c0-47.78,47.28-66.14,97.07-66.14s100.08,9.56,118.19,9.56h71.92v2.51h-44.76v347.02h44.76v2.51h-193.13Z"/><path d="M941.87,553.48c-24.89,45.77-68.4,80.97-136.55,80.97-214.25,0-225.57-321.12-297.49-321.12-4.89,0-10.57,1.38-16.34,4.3v174.99h39.73v2.51h-188.1v-2.51h44.76V145.6h-44.76v-2.51h188.1v2.51h-39.73v169.93c1.39-.91,2.81-1.78,4.24-2.62l73.45-82.3,41.24-85-36.21-.5,73.68-2.01,76.19.5-36.21,2.01-115.42,85-76.38,82.1c26.14-15.24,57.79-19.74,76.37-19.74,127.49,0,115.67,281.39,303.02,281.39,23.14,0,51.3-4.28,64.63-21.63l1.77.74Z"/><path d="M778.17,441.37c2.66-34.41,22.98-64.73,54.88-78.6,16.23-7.06,36.7-9.88,54.11-5.88.81.19,2.36,0,2.18,1.09-33.14-3.45-64.99,19.77-72.64,52.06-13.91,58.75,47.36,106.17,100.45,77.05,30.23-16.58,42.95-52.84,31.44-85.22l4.51,8.28c28.41,68.1-29.07,139.51-101.94,125.34-40.22-7.82-70.19-43.19-72.99-83.89v-10.24Z"/><g><path d="M696.57,219.96c1.99-.38,4.73.49,6.11,2.01,4.78,5.29,8.2,18.02,13.36,23.86l23.09,12.72c2.89,2.38,2.6,7.68-.28,10.05-5.87,4.84-17.2,7.98-23.47,13.05-3.06,4.12-11.05,23.18-14.6,24.72-1.89.81-4.09.82-5.97,0-3.88-1.69-10.75-19.94-14.89-24.43-4.3-4.67-23.14-11.42-24.78-15.24-1.05-2.44-1.03-6.5,1.33-8.15l23.44-13.08c4.72-6.1,8.03-17.56,12.72-23.09.9-1.07,2.61-2.17,3.94-2.43Z"/><path d="M750.32,326.08c-3.04,2.72-6.45,16.74-11.53,15.59-3.89-.88-7.12-12.38-10.42-15.49-3.78-3.56-17.31-6.05-14.32-12.8.89-2.01,12.12-6.02,14.64-8.58,2.89-2.94,5.42-11.75,7.74-14.02,6.08-5.98,10.81,11.19,14.35,14.41,3.44,3.13,16.33,6.37,14.67,11.77-.89,2.87-12.63,6.9-15.13,9.13Z"/></g></svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#resume">Résumé</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="cs-hero">
+    <div class="cs-hero-bg">
+      <img src="assets/images/choice/storefront-desktop.png" alt="" />
+    </div>
+    <div class="cs-hero-content">
+      <a class="cs-back" href="index.html">All work</a>
+      <p class="cs-eyebrow">Full-suite campaign</p>
+      <h1>Choice <em>Hotels</em></h1>
+      <div class="cs-meta">
+        <div class="cs-meta-item"><p class="cs-meta-label">Scope</p><p class="cs-meta-value">Email · Social · Display · Storefront · Video</p></div>
+        <div class="cs-meta-item"><p class="cs-meta-label">Campaign</p><p class="cs-meta-value">Black Friday — Choice Privileges</p></div>
+        <div class="cs-meta-item"><p class="cs-meta-label">Result</p><p class="cs-meta-value">10% engagement increase</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cs-body">
+
+    <div class="cs-overview reveal">
+      <div class="cs-overview-text">
+        <p>A full-suite Black Friday campaign for Choice Privileges, the rewards program for Choice Hotels — delivered across every major digital channel.</p>
+        <p>The campaign needed to work across radically different contexts and aspect ratios: full-width storefront banners on desktop, tablet, and mobile; Instagram and Facebook feed ads; IG Stories; Pinterest; display units from leaderboard to skyscraper; email banners for multiple audience segments; and a YouTube promo video. The creative challenge was maintaining a coherent brand language across all of these while adapting layout, hierarchy, and pacing to each format's demands.</p>
+      </div>
+      <div class="cs-stats">
+        <div class="cs-stat"><div class="cs-stat-num">10%</div><div class="cs-stat-label">Engagement increase</div></div>
+        <div class="cs-stat"><div class="cs-stat-num">5+</div><div class="cs-stat-label">Channel types</div></div>
+        <div class="cs-stat"><div class="cs-stat-num">15+</div><div class="cs-stat-label">Individual assets</div></div>
+      </div>
+    </div>
+
+    <!-- Storefront — responsive trio -->
+    <div class="cs-section reveal">
+      <p class="cs-section-title">Storefront — responsive</p>
+      <div class="cs-storefront-trio">
+        <div class="img-wrap">
+          <img class="zoomable" src="assets/images/choice/storefront-desktop.png" alt="Choice Hotels storefront desktop 1440px" />
+          <p class="cs-caption">Desktop — 1440px</p>
+        </div>
+        <div class="img-wrap">
+          <img class="zoomable" src="assets/images/choice/storefront-tablet.png" alt="Choice Hotels storefront tablet 768px" />
+          <p class="cs-caption">Tablet — 768px</p>
+        </div>
+        <div class="img-wrap">
+          <img class="zoomable" src="assets/images/choice/storefront-mobile.png" alt="Choice Hotels storefront mobile 375px" />
+          <p class="cs-caption">Mobile — 375px</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Social — feed mockups -->
+    <div class="cs-section reveal">
+      <p class="cs-section-title">Social — feed ads</p>
+      <div class="cs-social-grid">
+        <div class="img-wrap">
+          <img class="zoomable" src="assets/images/choice/ig-feed-1.png" alt="Choice Hotels Instagram feed ad mockup 1" />
+          <p class="cs-caption">Instagram feed</p>
+        </div>
+        <div class="img-wrap">
+          <img class="zoomable" src="assets/images/choice/ig-feed-2.jpg" alt="Choice Hotels Instagram feed ad mockup 2" />
+          <p class="cs-caption">Instagram feed — variant</p>
+        </div>
+        <div class="img-wrap">
+          <img class="zoomable" src="assets/images/choice/fb-1.png" alt="Choice Hotels Facebook ad mockup" />
+          <p class="cs-caption">Facebook feed</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Social — IG stories -->
+    <div class="cs-section reveal">
+      <p class="cs-section-title">Social — Instagram stories</p>
+      <div class="cs-story-pair">
+        <div class="img-wrap">
+          <img class="zoomable" src="assets/images/choice/ig-story-1.png" alt="Choice Hotels IG Story 1" />
+          <p class="cs-caption">Story — version 1</p>
+        </div>
+        <div class="img-wrap">
+          <img class="zoomable" src="assets/images/choice/ig-story-2.png" alt="Choice Hotels IG Story 2" />
+          <p class="cs-caption">Story — version 2</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Email mockups -->
+    <div class="cs-section reveal">
+      <p class="cs-section-title">Email</p>
+      <div class="cs-two-col">
+        <div class="img-wrap">
+          <img class="zoomable" src="assets/images/choice/email-mockup.png" alt="Choice Hotels email mockup — cart abandoner" />
+          <p class="cs-caption">Email — cart abandoner</p>
+        </div>
+        <div class="img-wrap">
+          <img class="zoomable" src="assets/images/choice/email-mockup-2.png" alt="Choice Hotels email mockup — past purchaser" />
+          <p class="cs-caption">Email — past purchaser</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Display ads -->
+    <div class="cs-section reveal">
+      <p class="cs-section-title">Display ads — shown at actual proportions</p>
+      <div class="cs-display-grid">
+        <div class="cs-display-item">
+          <img class="zoomable" src="assets/images/choice/display-728x90.png" alt="Choice Hotels 728x90 leaderboard" style="width:580px; max-width:100%;" />
+          <span class="cs-display-label">728×90 Leaderboard</span>
+        </div>
+        <div class="cs-display-item">
+          <img class="zoomable" src="assets/images/choice/display-300x250.png" alt="Choice Hotels 300x250 medium rectangle" style="width:220px;" />
+          <span class="cs-display-label">300×250 Medium Rectangle</span>
+        </div>
+        <div class="cs-display-item">
+          <img class="zoomable" src="assets/images/choice/display-160x600.png" alt="Choice Hotels 160x600 skyscraper" style="width:130px;" />
+          <span class="cs-display-label">160×600 Wide Skyscraper</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cs-nav">
+    <a href="united.html">United Airlines</a>
+    <a href="index.html">All work</a>
+  </div>
+
+  <footer>
+    <p>© 2026 Eve Kivari</p>
+    <a href="index.html">Back to portfolio</a>
+  </footer>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>
