@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>United Airlines — Eve Kivari</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    .cs-hero {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 48px 72px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .cs-hero-bg {
+      position: absolute; inset: 0;
+    }
+    .cs-hero-bg video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.2;
+      filter: saturate(0.4);
+    }
+    .cs-hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.8) 60%, #0a0a0a 100%);
+    }
+    .cs-hero-content {
+      position: relative; z-index: 2;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+    }
+    @keyframes fadeUp { to { opacity:1; transform:none; } }
+
+    .cs-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      transition: color 0.3s, gap 0.3s;
+    }
+    .cs-back::before { content: '←'; }
+    .cs-back:hover { color: var(--white); gap: 14px; }
+
+    .cs-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .cs-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
+
+    h1 {
+      font-family: var(--f-display);
+      font-size: clamp(52px, 6vw, 88px);
+      font-weight: 300;
+      line-height: 1.0;
+      color: var(--white);
+      margin-bottom: 32px;
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+
+    .cs-meta { display: flex; gap: 48px; flex-wrap: wrap; }
+    .cs-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .cs-meta-value { color: var(--white); font-size: 12px; }
+
+    .cs-body { max-width: 1400px; margin: 0 auto; padding: 0 48px; }
+
+    .cs-overview {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 80px;
+      padding: 80px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cs-overview-text p { color: var(--muted); line-height: 2; margin-bottom: 14px; font-size: 13px; }
+    .cs-overview-text p:first-child { font-family: var(--f-display); font-size: 20px; color: var(--text); line-height: 1.7; }
+
+    .cs-stats { display: flex; flex-direction: column; gap: 28px; justify-content: center; }
+    .cs-stat { padding: 20px 24px; background: var(--surface); border: 1px solid var(--border); border-left: 2px solid var(--accent); }
+    .cs-stat-num { font-family: var(--f-display); font-size: 32px; font-weight: 300; color: var(--accent); line-height: 1; }
+    .cs-stat-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+    .cs-section-title {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .cs-section-title::before { content: ''; flex: 1; max-width: 32px; height: 1px; background: var(--accent); }
+
+    .cs-section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+    .cs-section:last-child { border-bottom: none; }
+
+    .cs-caption { font-size: 11px; color: var(--muted); margin-top: 12px; letter-spacing: 0.06em; }
+
+    /* Video player */
+    .cs-video-wrap {
+      position: relative;
+      width: 100%;
+      background: #000;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .cs-video-wrap video {
+      width: 100%;
+      display: block;
+      max-height: 80vh;
+      object-fit: contain;
+    }
+
+    /* Two sizes side by side for CTV vs YouTube */
+    .cs-format-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+    }
+    .cs-format-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .cs-format-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+    .cs-format-desc { color: var(--muted); font-size: 12px; line-height: 1.8; }
+    .cs-format-detail { color: var(--text); font-size: 11px; }
+
+    /* Process notes */
+    .cs-process {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+    }
+    .cs-process-item {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .cs-process-num {
+      font-family: var(--f-display);
+      font-size: 40px;
+      font-weight: 300;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .cs-process-title { color: var(--white); font-size: 12px; margin-bottom: 8px; letter-spacing: 0.06em; }
+    .cs-process-text { color: var(--muted); font-size: 12px; line-height: 1.8; }
+
+    .cs-nav {
+      display: flex;
+      justify-content: space-between;
+      padding: 64px 48px;
+      border-top: 1px solid var(--border);
+    }
+    .cs-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cs-nav a:first-child::before { content: '←'; }
+    .cs-nav a:last-child::after  { content: '→'; }
+    .cs-nav a:hover { color: var(--accent); }
+
+    @media (max-width: 900px) {
+      .cs-hero, .cs-body { padding-left: 24px; padding-right: 24px; }
+      .cs-overview, .cs-format-compare, .cs-process { grid-template-columns: 1fr; gap: 24px; }
+      .cs-nav { padding: 48px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="lightbox-overlay" id="lightboxOverlay">
+    <button class="lightbox-close" onclick="closeLightbox()">Close ✕</button>
+    <img id="lightboxImg" src="" alt="" />
+  </div>
+
+  <nav id="nav">
+    <a class="nav-logo" href="index.html" aria-label="Back to home">
+      <svg viewBox="0 0 1024 768" xmlns="http://www.w3.org/2000/svg"><path d="M157.55,495.15v-2.51h44.76V151.15l60.1-6.04v-.5c-32.94-4.02-51.3-6.29-67.9-6.29-35.96,0-54.06,10.56-54.06,33.45,0,15.09,11.57,26.15,23.64,31.18-1.51,31.68-25.65,46.27-50.8,46.27s-49.79-18.86-49.79-49.54c0-47.78,47.28-66.14,97.07-66.14s100.08,9.56,118.19,9.56h71.92v2.51h-44.76v347.02h44.76v2.51h-193.13Z"/><path d="M941.87,553.48c-24.89,45.77-68.4,80.97-136.55,80.97-214.25,0-225.57-321.12-297.49-321.12-4.89,0-10.57,1.38-16.34,4.3v174.99h39.73v2.51h-188.1v-2.51h44.76V145.6h-44.76v-2.51h188.1v2.51h-39.73v169.93c1.39-.91,2.81-1.78,4.24-2.62l73.45-82.3,41.24-85-36.21-.5,73.68-2.01,76.19.5-36.21,2.01-115.42,85-76.38,82.1c26.14-15.24,57.79-19.74,76.37-19.74,127.49,0,115.67,281.39,303.02,281.39,23.14,0,51.3-4.28,64.63-21.63l1.77.74Z"/><path d="M778.17,441.37c2.66-34.41,22.98-64.73,54.88-78.6,16.23-7.06,36.7-9.88,54.11-5.88.81.19,2.36,0,2.18,1.09-33.14-3.45-64.99,19.77-72.64,52.06-13.91,58.75,47.36,106.17,100.45,77.05,30.23-16.58,42.95-52.84,31.44-85.22l4.51,8.28c28.41,68.1-29.07,139.51-101.94,125.34-40.22-7.82-70.19-43.19-72.99-83.89v-10.24Z"/><g><path d="M696.57,219.96c1.99-.38,4.73.49,6.11,2.01,4.78,5.29,8.2,18.02,13.36,23.86l23.09,12.72c2.89,2.38,2.6,7.68-.28,10.05-5.87,4.84-17.2,7.98-23.47,13.05-3.06,4.12-11.05,23.18-14.6,24.72-1.89.81-4.09.82-5.97,0-3.88-1.69-10.75-19.94-14.89-24.43-4.3-4.67-23.14-11.42-24.78-15.24-1.05-2.44-1.03-6.5,1.33-8.15l23.44-13.08c4.72-6.1,8.03-17.56,12.72-23.09.9-1.07,2.61-2.17,3.94-2.43Z"/><path d="M750.32,326.08c-3.04,2.72-6.45,16.74-11.53,15.59-3.89-.88-7.12-12.38-10.42-15.49-3.78-3.56-17.31-6.05-14.32-12.8.89-2.01,12.12-6.02,14.64-8.58,2.89-2.94,5.42-11.75,7.74-14.02,6.08-5.98,10.81,11.19,14.35,14.41,3.44,3.13,16.33,6.37,14.67,11.77-.89,2.87-12.63,6.9-15.13,9.13Z"/></g></svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#resume">Résumé</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="cs-hero">
+    <div class="cs-hero-bg">
+      <video autoplay muted loop playsinline>
+        <source src="assets/united-ad.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="cs-hero-content">
+      <a class="cs-back" href="index.html">All work</a>
+      <p class="cs-eyebrow">Video · Motion</p>
+      <h1>United <em>Airlines</em></h1>
+      <div class="cs-meta">
+        <div class="cs-meta-item"><p class="cs-meta-label">Scope</p><p class="cs-meta-value">CTV &amp; YouTube Ad</p></div>
+        <div class="cs-meta-item"><p class="cs-meta-label">Tools</p><p class="cs-meta-value">After Effects · Premiere Pro</p></div>
+        <div class="cs-meta-item"><p class="cs-meta-label">Format</p><p class="cs-meta-value">30-second ad</p></div>
+        <div class="cs-meta-item"><p class="cs-meta-label">Result</p><p class="cs-meta-value">$100M+ client milestone</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cs-body">
+
+    <div class="cs-overview reveal">
+      <div class="cs-overview-text">
+        <p>I proposed video advertising as a new creative channel for the agency — and when United Airlines agreed to pilot it, I owned the project end to end.</p>
+        <p>Working from United's motion toolkit and brand guidelines, I studied their existing YouTube content and social posts to understand how they already used motion. I produced a 30-second ad in Premiere Pro and After Effects, purpose-built for both YouTube and connected TV delivery. The logo animation was synced to the beat of the selected track. A slow zoom on the static hero image created the illusion of motion within a brand-approved asset. Copy pacing was carefully calibrated to ensure on-screen read time worked for large-format TV viewing. The ad was featured multiple times in company-wide marketing meetings.</p>
+      </div>
+      <div class="cs-stats">
+        <div class="cs-stat"><div class="cs-stat-num">30s</div><div class="cs-stat-label">Ad duration</div></div>
+        <div class="cs-stat"><div class="cs-stat-num">$100M+</div><div class="cs-stat-label">Client revenue milestone</div></div>
+        <div class="cs-stat"><div class="cs-stat-num">2</div><div class="cs-stat-label">Formats — YouTube + CTV</div></div>
+      </div>
+    </div>
+
+    <!-- The video -->
+    <div class="cs-section reveal">
+      <p class="cs-section-title">The ad</p>
+      <div class="cs-video-wrap">
+        <video controls poster="">
+          <source src="assets/united-ad.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <p class="cs-caption">United Airlines — CTV &amp; YouTube, 30s, November 2024</p>
+    </div>
+
+    <!-- Format thinking -->
+    <div class="cs-section reveal">
+      <p class="cs-section-title">Format considerations</p>
+      <div class="cs-format-compare">
+        <div class="cs-format-item">
+          <span class="cs-format-label">YouTube</span>
+          <p class="cs-format-desc">Viewed on screens ranging from mobile to desktop. Strong brand presence needed in the first 5 seconds before skip option. Copy timing calibrated for mixed viewing contexts.</p>
+          <p class="cs-format-detail">Aspect ratio: 16:9 · Resolution: 1920×1080</p>
+        </div>
+        <div class="cs-format-item">
+          <span class="cs-format-label">CTV — Connected TV</span>
+          <p class="cs-format-desc">Viewed on large living room screens from a distance. Scale and legibility drove layout decisions — type sizing, safe zones, and visual hierarchy were all adjusted for the 10-foot viewing experience.</p>
+          <p class="cs-format-detail">Aspect ratio: 16:9 · Viewed at 6–10 ft distance</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Production process -->
+    <div class="cs-section reveal">
+      <p class="cs-section-title">Production approach</p>
+      <div class="cs-process">
+        <div class="cs-process-item">
+          <div class="cs-process-num">01</div>
+          <p class="cs-process-title">Research &amp; brand immersion</p>
+          <p class="cs-process-text">Studied United's brand guidelines, audited their YouTube channel and social posts to understand how they used motion before proposing a direction.</p>
+        </div>
+        <div class="cs-process-item">
+          <div class="cs-process-num">02</div>
+          <p class="cs-process-title">Motion toolkit integration</p>
+          <p class="cs-process-text">United provided a motion toolkit with pre-approved animated assets from their social posts. Adapted and extended these for a longer video format.</p>
+        </div>
+        <div class="cs-process-item">
+          <div class="cs-process-num">03</div>
+          <p class="cs-process-title">Logo animation &amp; music sync</p>
+          <p class="cs-process-text">Animated the United logo beat-matched to the selected track — a small production detail that adds polish and energy to the open.</p>
+        </div>
+        <div class="cs-process-item">
+          <div class="cs-process-num">04</div>
+          <p class="cs-process-title">Static image motion technique</p>
+          <p class="cs-process-text">The hero image was brand-approved and static. Used a slow zoom (Ken Burns effect) to imply motion and maintain visual energy throughout the spot.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cs-nav">
+    <a href="jetblue.html">JetBlue Airlines</a>
+    <a href="choice.html">Choice Hotels</a>
+  </div>
+
+  <footer>
+    <p>© 2026 Eve Kivari</p>
+    <a href="index.html">Back to portfolio</a>
+  </footer>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>
