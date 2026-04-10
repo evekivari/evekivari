@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eve Kivari — Visual Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    /* ── HERO ───────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2px;
+      opacity: 0.18;
+      filter: saturate(0.4);
+    }
+    .hero-bg img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.85) 70%, #0a0a0a 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      opacity: 0;
+      transform: translateY(28px);
+      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 28px; height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: var(--f-display);
+      font-size: clamp(64px, 8vw, 120px);
+      font-weight: 300;
+      line-height: 0.95;
+      color: var(--white);
+      margin-bottom: 36px;
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+    .hero-desc {
+      color: var(--muted);
+      max-width: 420px;
+      line-height: 1.9;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      flex-shrink: 0;
+    }
+    .stat-num {
+      font-family: var(--f-display);
+      font-size: 32px;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: none; }
+    }
+
+    /* ── WORK SECTION ───────────────────────────────────── */
+    #work {
+      padding: 120px 48px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-bottom: 64px;
+    }
+    .section-num {
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+    }
+    h2 {
+      font-family: var(--f-display);
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: 300;
+      color: var(--white);
+    }
+    h2 em { font-style: italic; color: var(--muted); }
+
+    /* ── PROJECT CARDS ──────────────────────────────────── */
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 96px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+    }
+
+    /* Thumbnail — full width, natural aspect ratio, no cropping */
+    .card-thumb {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      transition: border-color 0.4s;
+    }
+    .card:hover .card-thumb { border-color: rgba(201,169,110,0.2); }
+
+    .card-thumb img,
+    .card-thumb video {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
+    .card:hover .card-thumb img,
+    .card:hover .card-thumb video { transform: scale(1.015); }
+
+    .card-thumb-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 55%, rgba(10,10,10,0.25) 100%);
+      pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    .card:hover .card-thumb-overlay { opacity: 0.6; }
+
+    .card-view-btn {
+      position: absolute;
+      bottom: 24px; right: 24px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: rgba(10,10,10,0.65);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 10px 20px;
+      border-radius: 100px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .card:hover .card-view-btn { opacity: 1; transform: none; }
+
+    /* Info — below image, constrained for readability */
+    .card-info {
+      padding: 28px 2px 0;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 48px;
+    }
+
+    /* Left: tag + title + client + desc */
+    .card-info-left {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* Right: pills + result + arrow */
+    .card-info-right {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 16px;
+      padding-top: 4px;
+    }
+
+    .card-tag {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .card-tag::before {
+      content: '';
+      width: 18px; height: 1px;
+      background: var(--accent);
+    }
+
+    .card-title {
+      font-family: var(--f-display);
+      font-size: clamp(36px, 3.5vw, 56px);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 6px;
+    }
+    .card-title em { font-style: italic; }
+
+    .card-client {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 32px;
+      font-size: 12px;
+    }
+
+    .card-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 36px;
+    }
+    .pill {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--muted);
+    }
+
+    .card-result {
+      display: inline-flex;
+      flex-direction: column;
+      padding: 16px 20px;
+      background: rgba(201,169,110,0.05);
+      border-left: 2px solid var(--accent);
+    }
+    .card-result-num {
+      font-family: var(--f-display);
+      font-size: 26px;
+      font-weight: 300;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .card-result-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .card-arrow {
+      margin-top: auto;
+      padding-top: 32px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.3s, gap 0.3s;
+    }
+    .card:hover .card-arrow { color: var(--accent); gap: 18px; }
+    .card-arrow::after { content: '→'; }
+
+    /* ── ABOUT + CONTACT STRIP ──────────────────────────── */
+    #about {
+      padding: 100px 48px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      line-height: 2;
+      margin-bottom: 18px;
+    }
+    .about-text p:first-child {
+      font-family: var(--f-display);
+      font-size: 20px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    .skill-cell {
+      padding: 18px 22px;
+      background: var(--surface2);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s, color 0.3s;
+    }
+    .skill-cell:hover { background: var(--bg); color: var(--text); }
+    .skill-cell strong { display: block; color: var(--text); margin-bottom: 3px; font-weight: 400; }
+
+    .contact-strip {
+      padding: 28px 32px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .contact-strip-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .contact-strip-value { color: var(--white); }
+    .contact-strip a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .contact-strip a:hover { border-color: var(--accent); }
+
+    /* ── RESUME ─────────────────────────────────────────── */
+    #resume { padding: 100px 48px; }
+
+    .resume-grid {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 80px;
+    }
+
+    .resume-sidebar-title {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .resume-list {
+      list-style: none;
+      margin-bottom: 40px;
+    }
+    .resume-list li {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .resume-list li::before { content: '—'; color: var(--border); }
+
+    .resume-job {
+      padding-bottom: 44px;
+      margin-bottom: 44px;
+      border-bottom: 1px solid var(--border);
+    }
+    .resume-job:last-child { border-bottom: none; }
+    .resume-job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+    .resume-company {
+      font-family: var(--f-display);
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--white);
+    }
+    .resume-date { font-size: 10px; color: var(--muted); letter-spacing: 0.08em; }
+    .resume-role {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+    .resume-bullets { list-style: none; }
+    .resume-bullets li {
+      color: var(--muted);
+      padding: 5px 0 5px 18px;
+      position: relative;
+      line-height: 1.8;
+      font-size: 12px;
+    }
+    .resume-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--border); }
+
+    /* ── CONTACT ────────────────────────────────────────── */
+    #contact {
+      padding: 120px 48px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .contact-heading {
+      font-family: var(--f-display);
+      font-size: clamp(52px, 7vw, 100px);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 0.95;
+      margin-bottom: 20px;
+    }
+    .contact-heading em { font-style: italic; color: var(--muted); }
+    .contact-sub { color: var(--muted); margin-bottom: 52px; }
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 44px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--white);
+      text-decoration: none;
+      font-family: var(--f-mono);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background 0.3s, border-color 0.3s, gap 0.3s;
+    }
+    .contact-btn:hover {
+      background: rgba(201,169,110,0.06);
+      border-color: var(--accent);
+      gap: 22px;
+    }
+    .contact-btn::after { content: '→'; color: var(--accent); }
+
+    @media (max-width: 900px) {
+      #hero { padding: 120px 24px 60px; }
+      .hero-meta { flex-direction: column; gap: 32px; }
+      #work, #about, #resume, #contact { padding: 80px 24px; }
+      .cards { gap: 64px; }
+      .card-info { flex-direction: column; gap: 20px; padding: 20px 0 0; }
+      .card-info-right { align-items: flex-start; }
+      .about-grid, .resume-grid { grid-template-columns: 1fr; gap: 48px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <div class="lightbox-overlay" id="lightboxOverlay">
+    <button class="lightbox-close" onclick="closeLightbox()">Close ✕</button>
+    <img id="lightboxImg" src="" alt="" />
+  </div>
+
+  <nav id="nav">
+    <a class="nav-logo" href="index.html" aria-label="Eve Kivari home">
+      <svg viewBox="0 0 1024 768" xmlns="http://www.w3.org/2000/svg"><path d="M157.55,495.15v-2.51h44.76V151.15l60.1-6.04v-.5c-32.94-4.02-51.3-6.29-67.9-6.29-35.96,0-54.06,10.56-54.06,33.45,0,15.09,11.57,26.15,23.64,31.18-1.51,31.68-25.65,46.27-50.8,46.27s-49.79-18.86-49.79-49.54c0-47.78,47.28-66.14,97.07-66.14s100.08,9.56,118.19,9.56h71.92v2.51h-44.76v347.02h44.76v2.51h-193.13Z"/><path d="M941.87,553.48c-24.89,45.77-68.4,80.97-136.55,80.97-214.25,0-225.57-321.12-297.49-321.12-4.89,0-10.57,1.38-16.34,4.3v174.99h39.73v2.51h-188.1v-2.51h44.76V145.6h-44.76v-2.51h188.1v2.51h-39.73v169.93c1.39-.91,2.81-1.78,4.24-2.62l73.45-82.3,41.24-85-36.21-.5,73.68-2.01,76.19.5-36.21,2.01-115.42,85-76.38,82.1c26.14-15.24,57.79-19.74,76.37-19.74,127.49,0,115.67,281.39,303.02,281.39,23.14,0,51.3-4.28,64.63-21.63l1.77.74Z"/><path d="M778.17,441.37c2.66-34.41,22.98-64.73,54.88-78.6,16.23-7.06,36.7-9.88,54.11-5.88.81.19,2.36,0,2.18,1.09-33.14-3.45-64.99,19.77-72.64,52.06-13.91,58.75,47.36,106.17,100.45,77.05,30.23-16.58,42.95-52.84,31.44-85.22l4.51,8.28c28.41,68.1-29.07,139.51-101.94,125.34-40.22-7.82-70.19-43.19-72.99-83.89v-10.24Z"/><g><path d="M696.57,219.96c1.99-.38,4.73.49,6.11,2.01,4.78,5.29,8.2,18.02,13.36,23.86l23.09,12.72c2.89,2.38,2.6,7.68-.28,10.05-5.87,4.84-17.2,7.98-23.47,13.05-3.06,4.12-11.05,23.18-14.6,24.72-1.89.81-4.09.82-5.97,0-3.88-1.69-10.75-19.94-14.89-24.43-4.3-4.67-23.14-11.42-24.78-15.24-1.05-2.44-1.03-6.5,1.33-8.15l23.44-13.08c4.72-6.1,8.03-17.56,12.72-23.09.9-1.07,2.61-2.17,3.94-2.43Z"/><path d="M750.32,326.08c-3.04,2.72-6.45,16.74-11.53,15.59-3.89-.88-7.12-12.38-10.42-15.49-3.78-3.56-17.31-6.05-14.32-12.8.89-2.01,12.12-6.02,14.64-8.58,2.89-2.94,5.42-11.75,7.74-14.02,6.08-5.98,10.81,11.19,14.35,14.41,3.44,3.13,16.33,6.37,14.67,11.77-.89,2.87-12.63,6.9-15.13,9.13Z"/></g></svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#resume">Résumé</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <img src="assets/images/mockups/jetblue-desktop-mockup.png" alt="" />
+      <img src="assets/images/mockups/choice-desktop-mockup.png" alt="" />
+      <img src="assets/images/choice/ig-story-1.png" alt="" />
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Visual Designer — Toronto</p>
+      <h1>Eve<br><em>Kivari</em></h1>
+      <div class="hero-meta">
+        <p class="hero-desc">Multi-channel campaigns. Brand systems. Motion &amp; video. 4+ years creating digital experiences for travel and hospitality brands.</p>
+        <div class="hero-stats">
+          <div><div class="stat-num">4+</div><div class="stat-label">Years exp.</div></div>
+          <div><div class="stat-num">10%</div><div class="stat-label">Engagement lift</div></div>
+          <div><div class="stat-num">$100M</div><div class="stat-label">Client milestone</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section id="work">
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <h2>Selected <em>work</em></h2>
+    </div>
+
+    <div class="cards">
+
+      <!-- JetBlue -->
+      <a class="card reveal" href="jetblue.html">
+        <div class="card-thumb">
+          <img src="assets/images/mockups/jetblue-desktop-mockup.png" alt="JetBlue email in browser mockup showing mountain illustration" />
+          <div class="card-thumb-overlay"></div>
+          <span class="card-view-btn">View case study</span>
+        </div>
+        <div class="card-info">
+          <div class="card-info-left">
+            <p class="card-tag">Multi-channel campaign</p>
+            <h3 class="card-title">JetBlue <em>Airlines</em></h3>
+            <p class="card-client">Rebrand campaign — Email · Display · Storefront</p>
+            <p class="card-desc">Interpreted a fresh rebrand through custom 2D illustration — an aspirational mountain landscape that became the visual thread across email, display, and storefront formats.</p>
+          </div>
+          <div class="card-info-right">
+            <div class="card-pills">
+              <span class="pill">Illustration</span>
+              <span class="pill">Email</span>
+              <span class="pill">Display</span>
+              <span class="pill">Brand interpretation</span>
+            </div>
+            <div class="card-result">
+              <div class="card-result-num">6 formats</div>
+              <div class="card-result-label">Delivered across campaign</div>
+            </div>
+            <span class="card-arrow">View case study</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- United Airlines -->
+      <a class="card reveal reveal-delay-1" href="united.html">
+        <div class="card-thumb">
+          <video autoplay muted loop playsinline>
+            <source src="assets/united-ad.mp4" type="video/mp4" />
+          </video>
+          <div class="card-thumb-overlay"></div>
+          <span class="card-view-btn">View case study</span>
+        </div>
+        <div class="card-info">
+          <div class="card-info-left">
+            <p class="card-tag">Video · Motion</p>
+            <h3 class="card-title">United <em>Airlines</em></h3>
+            <p class="card-client">CTV &amp; YouTube Ad — After Effects · Premiere Pro</p>
+            <p class="card-desc">Proposed a new video channel for the agency, then owned the first execution for United — a 30-second ad built for both YouTube and large-screen CTV delivery.</p>
+          </div>
+          <div class="card-info-right">
+            <div class="card-pills">
+              <span class="pill">After Effects</span>
+              <span class="pill">Premiere Pro</span>
+              <span class="pill">CTV</span>
+              <span class="pill">YouTube</span>
+            </div>
+            <div class="card-result">
+              <div class="card-result-num">$100M+</div>
+              <div class="card-result-label">Client revenue milestone</div>
+            </div>
+            <span class="card-arrow">View case study</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Choice Hotels -->
+      <a class="card reveal reveal-delay-2" href="choice.html">
+        <div class="card-thumb">
+          <img src="assets/images/mockups/choice-desktop-mockup.png" alt="Choice Hotels storefront in browser mockup" />
+          <div class="card-thumb-overlay"></div>
+          <span class="card-view-btn">View case study</span>
+        </div>
+        <div class="card-info">
+          <div class="card-info-left">
+            <p class="card-tag">Full-suite campaign</p>
+            <h3 class="card-title">Choice <em>Hotels</em></h3>
+            <p class="card-client">Black Friday — Email · Social · Display · Storefront · Video</p>
+            <p class="card-desc">End-to-end Black Friday campaign for Choice Privileges across every major digital channel — email, social, display, storefront, and YouTube — with consistent visual language across all formats.</p>
+          </div>
+          <div class="card-info-right">
+            <div class="card-pills">
+              <span class="pill">Email</span>
+              <span class="pill">Social</span>
+              <span class="pill">Display</span>
+              <span class="pill">Storefront</span>
+              <span class="pill">YouTube</span>
+            </div>
+            <div class="card-result">
+              <div class="card-result-num">10%</div>
+              <div class="card-result-label">Engagement increase</div>
+            </div>
+            <span class="card-arrow">View case study</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="section-header reveal">
+      <span class="section-num">02</span>
+      <h2>About <em>me</em></h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm a visual designer who works across the full digital campaign stack — from illustrated email banners to motion-designed video ads.</p>
+        <p>My background is in-house at SaaS and loyalty platforms, working with travel and hospitality clients including JetBlue, United Airlines, and Choice Hotels. I'm looking to bring that multi-channel production experience into an agency environment.</p>
+        <p>I studied Interactive Media Design at Durham College — a technical foundation that bleeds into my design approach. I think in formats, contexts, and constraints, not just aesthetics.</p>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="skills-grid">
+          <div class="skill-cell"><strong>Figma</strong>Auto-layout, templates, systems</div>
+          <div class="skill-cell"><strong>After Effects</strong>Motion, animation, logo work</div>
+          <div class="skill-cell"><strong>Premiere Pro</strong>Video editing, CTV/YouTube</div>
+          <div class="skill-cell"><strong>Design Systems</strong>Scalable, cross-team</div>
+          <div class="skill-cell"><strong>Illustration</strong>2D, flat, brand-aligned</div>
+          <div class="skill-cell"><strong>Accessibility</strong>WCAG-aware layouts</div>
+        </div>
+        <div class="contact-strip reveal reveal-delay-2">
+          <div>
+            <p class="contact-strip-label">Available for</p>
+            <p class="contact-strip-value">Agency roles · Full-time</p>
+          </div>
+          <a href="/cdn-cgi/l/email-protection#a9c0dfc0ccc2c0dfc8dbc0e9c6dcddc5c6c6c287cac6c4">Get in touch →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resume -->
+  <section id="resume">
+    <div class="section-header reveal">
+      <span class="section-num">03</span>
+      <h2>Résumé</h2>
+    </div>
+    <div class="resume-grid">
+      <div class="reveal">
+        <p class="resume-sidebar-title">Education</p>
+        <ul class="resume-list">
+          <li>Durham College</li>
+          <li>Interactive Media Design</li>
+        </ul>
+        <p class="resume-sidebar-title">Tools</p>
+        <ul class="resume-list">
+          <li>Figma</li>
+          <li>After Effects</li>
+          <li>Premiere Pro</li>
+          <li>Photoshop</li>
+          <li>Illustrator</li>
+        </ul>
+        <p class="resume-sidebar-title">Capabilities</p>
+        <ul class="resume-list">
+          <li>Design Systems</li>
+          <li>Motion &amp; Video</li>
+          <li>Illustration</li>
+          <li>Email · Display · Social</li>
+          <li>CTV Advertising</li>
+          <li>Accessibility</li>
+        </ul>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <span class="resume-company">Plusgrade</span>
+            <span class="resume-date">Mar 2023 — Present</span>
+          </div>
+          <p class="resume-role">Visual Designer</p>
+          <ul class="resume-bullets">
+            <li>Owned visual direction for digital campaigns across email, paid, social, and web</li>
+            <li>Introduced video advertising as a new creative channel; contributed to a platinum client surpassing $100M in revenue</li>
+            <li>Drove a 10% engagement lift on a Black Friday campaign</li>
+            <li>Built scalable Figma templates and design systems to streamline cross-team production</li>
+          </ul>
+        </div>
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <span class="resume-company">Points</span>
+            <span class="resume-date">Sept 2022 — Feb 2023</span>
+          </div>
+          <p class="resume-role">Junior Digital Designer</p>
+          <ul class="resume-bullets">
+            <li>Expanded campaign asset suites with motion and video</li>
+            <li>Collaborated with design lead on B2B and SaaS campaign visuals across digital, social, and paid</li>
+          </ul>
+        </div>
+        <div class="resume-job">
+          <div class="resume-job-header">
+            <span class="resume-company">Bluprnt Digital Media</span>
+            <span class="resume-date">Apr 2022 — Sept 2022</span>
+          </div>
+          <p class="resume-role">Graphic Designer</p>
+          <ul class="resume-bullets">
+            <li>Redesigned a political campaign flyer distributed to 100,000+ residents</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h2 class="contact-heading reveal">Let's<br><em>work together</em></h2>
+    <p class="contact-sub reveal reveal-delay-1">Open to agency roles. Based in Canada. Open to remote.</p>
+    <a class="contact-btn reveal reveal-delay-2" href="/cdn-cgi/l/email-protection#741d021d111f1d0215061d341b0100181b1b1f5a171b19"><span class="__cf_email__" data-cfemail="e38a958a86888a9582918aa38c96978f8c8c88cd808c8e">[email&#160;protecte
